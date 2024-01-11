@@ -1,0 +1,19 @@
+.AUTH {
+  height: 100vh;
+  display: grid;
+  place-content: center;
+}
+
+.AUTH button {
+  padding: 20px 25px;
+  font-size: 20px;
+  border: 2px solid #00000036;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.1s;
+}
+
+.AUTH button:hover {
+  background: #2196f35c;
+  color: #3c4c54;
+}
