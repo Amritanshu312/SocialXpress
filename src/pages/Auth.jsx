@@ -16,9 +16,9 @@ const Auth = () => {
     try {
       const userCredential = await signInWithPopup(auth, googleProvider);
       const { displayName, email, phoneNumber, photoURL, uid } = userCredential.user
-      // navigate("/")
-      await setDoc(doc(db, "users_", userCredential.user.uid), { displayName, email, phoneNumber, photoURL, uid });
+      await setDoc(doc(db, "users_", userCredential.user.uid), { displayName, email, phoneNumber, photoURL, uid, banner: "" });
 
+      navigate("/")
     } catch (err) {
       console.error(err);
     }

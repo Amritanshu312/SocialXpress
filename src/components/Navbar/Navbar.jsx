@@ -1,23 +1,25 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import "./Navbar.css"
 import { auth } from "../../config/firebase";
 import { signOut } from "firebase/auth";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { UserInfo } from '../../contexts/UserInfo';
 
 const Navbar = () => {
 
   const [profilePic, setProfilePic] = useState("")
+  const { info } = useContext(UserInfo)
   const navigation = useNavigate()
+  const { userID } = useParams()
 
+  useEffect(() => (
+    (setProfilePic(localStorage.getItem('photoURL') || 'icon/userdummyprofile.svg'),
+      auth.onAuthStateChanged(user => (user
+        ? localStorage.setItem('photoURL', auth?.currentUser?.photoURL || 'icon/userdummyprofile.svg')
+        : setProfilePic('icon/userdummyprofile.svg')
+      )))
+  ), []);
 
-  auth.onAuthStateChanged(function (user) {
-    if (user) {
-      localStorage.setItem('photoURL', auth?.currentUser?.photoURL)
-    }
-    else setProfilePic('icon/userdummyprofile.svg')
-  })
-
-  useEffect(() => setProfilePic(localStorage.getItem('photoURL') || 'icon/userdummyprofile.svg', []))
 
   const logout = async () => {
     try {
@@ -44,11 +46,10 @@ const Navbar = () => {
       </ul>
 
       <div className="navbar__userInfo">
-        <img src="icon/search.webp" alt="" />
-        {!profilePic.includes('.svg') && <img src="icon/logout.svg" alt="" onClick={logout} />}
-
+        <img src="/icon/search.webp" alt="" />
+        {!profilePic.includes('.svg') && <img src="/icon/logout.svg" alt="" onClick={logout} />}
         <div className="navbar__user__img">
-          <img src={profilePic} onClick={e => profilePic.includes('.svg') && navigation('/auth')} alt="User Image" />
+          <img src={profilePic} onClick={() => profilePic.includes('.svg') ? navigation('/auth') : !userID && navigation(`/user/${info.uid}`)} alt="User Image" />
         </div>
       </div>
 

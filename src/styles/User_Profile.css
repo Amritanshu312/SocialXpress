@@ -1,0 +1,137 @@
+.profile_container {
+  padding: 80px 5px 0 84px;
+  flex-direction: column;
+  display: flex;
+  align-items: center;
+  min-height: 91vh;
+}
+
+.User_info_and_bannner {
+  position: relative;
+  min-width: 2px;
+  margin-bottom: 82px;
+  max-width: 80rem;
+  width: 100%;
+}
+
+.profile_banner img {
+  width: 100%;
+  max-height: 325px;
+  border-radius: 20px;
+  user-select: none;
+  pointer-events: none;
+  cursor: pointer;
+}
+
+.Profile_info {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  bottom: -70px;
+  left: 52px;
+}
+
+.profile_Img img {
+  border-radius: 50%;
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border: 3px solid var(--bg--color);
+}
+
+.Profile_Name {
+  margin-top: 80px;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 700;
+  font-size: 1.82rem;
+  color: #000000db;
+  margin-left: 6px;
+}
+
+.profileEdit {
+  margin-right: 11px;
+  position: absolute;
+  right: 10px;
+  margin-top: 10px;
+  gap: 11px;
+  display: flex;
+}
+
+.profileEdit button {
+  padding: 14px 25px;
+  border-radius: 8px;
+  font-family: "Montserrat", sans-serif;
+  cursor: pointer;
+  border: 2px solid #0000001c;
+  font-weight: 500;
+  font-size: 16px;
+  transition: 0.3s;
+}
+
+.profileEdit button.active {
+  background: #1877f28c;
+  color: #ffffffd4;
+}
+
+.profileEdit button.active:hover {
+  background: var(--Navbar--blue);
+  color: #ffffffd4;
+}
+
+.profileEdit button:hover {
+  background: #dfdfdf;
+}
+
+.Profile_posts {
+  max-width: 44rem;
+  background: var(--Navbar--bg--color);
+  padding: 23px;
+  border-radius: 18px;
+  margin-top: 26px;
+  margin-bottom: 89px;
+  width: 100%;
+}
+
+.Profile_Heading {
+  padding: 15px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 27px;
+  color: #000000a1;
+  border-bottom: 2px solid #0000000a;
+}
+
+@media only screen and (max-width: 980px) {
+  .profile_container {
+    padding: 80px 0px 0 0;
+  }
+
+  .profile_banner img {
+    border-radius: 0px;
+  }
+
+  .Profile_info {
+    display: flex;
+    transform: translate(-50%);
+    left: 50%;
+    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .Profile_Name {
+    margin: 0;
+  }
+  .profileEdit {
+    position: absolute;
+    margin-top: 96px;
+    transform: translateX(50%);
+    gap: 11px;
+    margin-right: 0;
+    right: 50%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  .User_info_and_bannner {
+    margin-bottom: 176px;
+  }
+}

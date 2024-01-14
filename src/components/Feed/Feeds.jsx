@@ -1,4 +1,3 @@
-import React, { useContext, useState } from 'react'
 import './Feeds.css'
 import FeedInput from './FeedInput'
 import Posts from './Posts'
