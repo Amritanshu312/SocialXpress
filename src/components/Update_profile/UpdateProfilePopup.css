@@ -1,0 +1,141 @@
+.UpdateProfile {
+  position: fixed;
+  z-index: 11;
+  background: white;
+  border-radius: 10px;
+  border: 2px solid #00000024;
+  left: 50%;
+  width: 42rem;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  animation: popup 0.5s ease-in-out;
+}
+
+.UpdateProfileHeader {
+  display: flex;
+  padding: 10px;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2px solid #00000017;
+}
+
+.UpdateProfileHeader .title {
+  font-family: "Montserrat", sans-serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: #000000d1;
+}
+
+.UpdateProfileHeader svg {
+  height: 20px;
+  width: 20px;
+}
+
+.UpdateProfileHeader svg path {
+  fill: black;
+}
+
+.UpdatePopupclose {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #00000042;
+  padding: 10px;
+  transition: 0.5s;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.UpdatePopupclose:hover {
+  background: #a1a1a1;
+}
+
+/* updateProfilePic */
+
+.updateProfilePic,
+.updateProfileCover,
+.updateProfileIntro {
+  padding: 10px;
+}
+
+.updateProfilePic .title,
+.updateProfileCover .title,
+.updateProfileIntro .title {
+  font-family: "Montserrat", sans-serif;
+  font-size: 22px;
+  font-weight: 500;
+}
+
+.updateProfilePic .UpdateImage,
+.updateProfileCover .UpdateImage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 18px;
+}
+
+.updateProfilePic .UpdateImage img {
+  height: 10rem;
+  width: 10rem;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+.updateProfileCover .UpdateImage img {
+  height: 16rem;
+  width: 37rem;
+  object-fit: cover;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+/* updateProfileIntro */
+
+.updateProfileIntro .Intro_input input {
+  font-family: "Montserrat", sans-serif;
+  padding: 10px 8px;
+  font-size: 18px;
+  margin-top: 12px;
+  border: 2px solid #00000024;
+  outline: none;
+  border-radius: 8px;
+  width: -webkit-fill-available;
+  margin-right: 28px;
+  margin-left: 6px;
+}
+
+.updateProfileIntro .save {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 18px;
+  margin-bottom: 10px;
+}
+
+.updateProfileIntro .save button {
+  padding: 12px 29px;
+  border-radius: 8px;
+  font-family: "Montserrat", sans-serif;
+  cursor: pointer;
+  border: 2px solid #0000001c;
+  font-weight: 500;
+  font-size: 19px;
+  transition: 0.3s;
+  background: #1877f28c;
+  color: #000000b3;
+}
+
+.updateProfileIntro .save button:hover {
+  background: #1876f2b0;
+}
+
+@keyframes popup {
+  0% {
+    transform: translate(-50%, -50%) scale(0.2);
+  }
+
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+}

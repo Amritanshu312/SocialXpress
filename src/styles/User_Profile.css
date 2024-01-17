@@ -21,6 +21,7 @@
   user-select: none;
   pointer-events: none;
   cursor: pointer;
+  object-fit: cover;
 }
 
 .Profile_info {
@@ -133,5 +134,11 @@
   }
   .User_info_and_bannner {
     margin-bottom: 176px;
+  }
+}
+
+@media only screen and (max-width: 756px) {
+  .Profile_posts {
+    padding: 0;
   }
 }

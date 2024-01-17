@@ -12,9 +12,8 @@ const UserState = (props) => {
       if (user) {
         let LoggedIn = true
         let datauser = await getDoc(doc(db, 'users_', user.uid))
-
-        const { email, emailVerified, displayName, photoURL, uid } = datauser.data()
-        setInfo({ email, emailVerified, displayName, photoURL, uid, LoggedIn })
+        const { email, emailVerified, displayName, photoURL, banner, uid } = datauser.data()
+        setInfo({ email, emailVerified, displayName, photoURL, uid, banner, LoggedIn })
       }
       else {
         setInfo({ LoggedIn: false })
@@ -22,9 +21,9 @@ const UserState = (props) => {
     })
   }
 
-  useEffect(() => getuserinfo(), [])
+  useEffect(() => getuserinfo, [])
   return (
-    <UserInfo.Provider value={{ info }}>
+    <UserInfo.Provider value={{ info, setInfo }}>
       {props.children}
     </UserInfo.Provider>
   )

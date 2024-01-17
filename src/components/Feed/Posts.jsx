@@ -6,15 +6,16 @@ import { UserInfo } from "../../contexts/UserInfo";
 import { ScreenLoadingInfo } from "../../contexts/screen_Loading";
 import { deleteObject, ref } from "firebase/storage";
 import { useNavigate } from "react-router-dom";
+
 import InfiniteScroll from "react-infinite-scroll-component";
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css';
 
 const Posts = () => {
-
   const [FeedData, setFeedData] = useState([])
   const { info } = useContext(UserInfo)
   const navigate = useNavigate()
   const { setScreenLoading } = useContext(ScreenLoadingInfo)
-
 
   const [getfrom, setgetfrom] = useState(6)
   const [totalData, setTotalData] = useState(0)
@@ -40,64 +41,55 @@ const Posts = () => {
   }, [db]);
 
 
-
   const getMovieList = async () => {
     try {
       const data = await getDocs(query(collection(db, 'posts'), orderBy('createdDate'), limit(getfrom)));
       const querySnapshot = await getDocs(collection(db, 'posts'));
 
-      if (querySnapshot.docs) {
-        const totalData = querySnapshot.docs.length;
-        setTotalData(totalData);
-      } else {
+      if (!querySnapshot.docs) {
         console.error('Error: Unable to retrieve documents.');
+        return;
       }
 
-      const filteredData = data.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id,
-      }));
-      setFetchData(filteredData.length)
+      const totalData = querySnapshot.docs.length;
+      setTotalData(totalData);
 
-      const uidsToFetch = filteredData.map((item) => item.uid);
+      const filteredData = data.docs.map(doc => ({ ...doc.data(), id: doc.id }));
+      setFetchData(filteredData.length);
 
+      const uidsToFetch = filteredData.map(item => item.uid);
       const cachedUserInformation = {};
-      const uidsToFetchFromApi = [];
-      for (const uid of uidsToFetch) {
+      const uidsToFetchFromApi = uidsToFetch.filter(uid => {
         if (cachedUserInformation[uid]) {
-          filteredData.find((item) => item.uid === uid).userData = cachedUserInformation[uid];
-        } else {
-          uidsToFetchFromApi.push(uid);
+          filteredData.find(item => item.uid === uid).userData = cachedUserInformation[uid];
+          return false;
         }
-      }
+        return true;
+      });
 
       const batchSize = 10;
-      const batches = [];
-      for (let i = 0; i < uidsToFetchFromApi.length; i += batchSize) {
-        const batchUids = uidsToFetchFromApi.slice(i, i + batchSize);
-        const batchPromises = batchUids.map((uid) => getDoc(doc(db, 'users_', uid)));
-        const batchResults = await Promise.all(batchPromises);
-
-        batchResults.forEach((doc) => {
-          const uid = doc.id.split('_')[1];
-          cachedUserInformation[uid] = doc.data();
-        });
-
-        batches.push(batchResults.map((doc) => doc.data()));
-      }
+      const batches = await Promise.all(
+        uidsToFetchFromApi
+          .map((uid, i) => (i % batchSize === 0 ? uidsToFetchFromApi.slice(i, i + batchSize) : null))
+          .filter(Boolean)
+          .map(batchUids =>
+            Promise.all(batchUids.map(uid => getDoc(doc(db, 'users_', uid))))
+          )
+      );
 
       const filteredDataWithUserInfo = filteredData.map((item, index) => ({
         ...item,
-        userData: item.userData || batches[Math.floor(index / batchSize)][index % batchSize],
+        userData: item.userData || batches[Math.floor(index / batchSize)][index % batchSize].data(),
       }));
 
       setScreenLoading(false);
       setFeedData(filteredDataWithUserInfo);
-
     } catch (err) {
       console.error(err);
     }
   };
+  ;
+
 
 
   const deleteMovie = async (id, name) => {
@@ -117,7 +109,6 @@ const Posts = () => {
 
   useEffect(() => loadMore, [])
 
-  console.log(totalData, fetchedData);
   return (
     <>
       {<InfiniteScroll
@@ -131,7 +122,8 @@ const Posts = () => {
 
               <div className="User_feed_data_user">
                 <div className="Feed_user_image">
-                  <img
+                  <LazyLoadImage
+                    effect="blur"
                     src={data.userData.photoURL}
                     alt=""
                     onClick={() => navigate(`/user/${data.uid}`)}
@@ -157,7 +149,8 @@ const Posts = () => {
               </div>
 
               {data.Imageurl && <div className="Feed_image">
-                <img src={data.Imageurl} alt="" />
+                <LazyLoadImage
+                  effect="blur" width={'100%'} src={data.Imageurl} alt="" />
               </div>}
             </div>
           </ div >

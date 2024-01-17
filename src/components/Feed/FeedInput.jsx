@@ -11,8 +11,9 @@ import {
 } from "firebase/storage";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { checkFileupload } from "../../utils/Check_file_upload";
 
-const FeedInput = () => {
+const FeedInput = (props) => {
   const moviesCollectionRef = collection(db, "posts");
   const [postingdata, setPostingdata] = useState({ feed_description: "" });
   const [ToggleGIf, setToggleGIf] = useState({ toggle: false, url: "" });
@@ -20,7 +21,6 @@ const FeedInput = () => {
   const { info } = useContext(UserInfo);
   const [imagetoupload, setImagetoupload] = useState('')
   const [previewIMG, setPreviewIMG] = useState('')
-
 
   const navigate = useNavigate()
 
@@ -38,10 +38,10 @@ const FeedInput = () => {
           }
 
           if (!(imagetoupload.type === "image/png" || imagetoupload.type === "image/jpeg")) {
-            
             return toast("PNG, JPG, JPEG files only")
           }
 
+          if (imagetoupload.size <= !1000000) { return toast("Please Upload Files smaller than 1 mb") }
 
           const filename = `${generateRandomString()}.${imagetoupload.name.split('.').pop()}`
           const storageRef = ref(storage, `posts/${filename}`);
@@ -103,7 +103,7 @@ const FeedInput = () => {
           }, 1000);
         }
       } else {
-        alert("Please write something if you want to post");
+        toast("Please choose a file first!")
         setProgressbar(null);
       }
     } catch (err) {
@@ -115,7 +115,7 @@ const FeedInput = () => {
   const onchange = (e) =>
     setPostingdata({ ...postingdata, [e.target.name]: e.target.value });
   return (
-    <div className="Feed__Input">
+    <div className="Feed__Input" style={props.addpost ? { boxShadow: '0px 0px 48px 14px #646464', position: "relative", zIndex: '10' } : {}}>
       <div className="Input">
         <div className="Feed_img">
           <img src={info.photoURL || "icon/userdummyprofile.svg"} onClick={() => info.photoURL && navigate(`/user/${info.uid}`)} alt="" />
@@ -187,15 +187,18 @@ const FeedInput = () => {
       <div className="Feed__Upload__option">
         {progressbar === null ? (
           <>
-            <label className="Feed_upload" htmlFor="phoneupload">Photo</label>
-            <input style={{ display: 'none' }} type="file" id="phoneupload" onChange={e => { setImagetoupload(e.target.files[0]); ToggleGIf.toggle && setToggleGIf({ toggle: !ToggleGIf.toggle }) }} />
+            <label className="Feed_upload" htmlFor="photoupload">Photo</label>
+            <input style={{ display: 'none' }} accept="image/png, image/jpeg" type="file" id="photoupload" onChange={e => {
+              let fileCheck = checkFileupload(e.target.files[0]);
+              fileCheck && setImagetoupload(e.target.files[0]);
+              fileCheck && ToggleGIf.toggle && setToggleGIf({ toggle: !ToggleGIf.toggle })
+            }} />
 
             <div
               className="Feed_upload"
               onClick={() =>
                 setToggleGIf({ ...ToggleGIf, toggle: !ToggleGIf.toggle })
-              }
-            >
+              }>
               Gif
             </div>
             <div className="Feed_upload">Feeling/activity</div>

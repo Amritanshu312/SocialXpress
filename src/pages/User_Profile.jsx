@@ -3,17 +3,24 @@ import { ScreenLoadingInfo } from '../contexts/screen_Loading'
 import "../styles/User_Profile.css"
 import Navbar from '../components/Navbar/Navbar'
 import Sidebar from '../components/Sidebar/Sidebar'
-import { collection, deleteDoc, doc, getDoc, getDocs, limit, orderBy, query, where } from 'firebase/firestore'
+import { collection, deleteDoc, doc, getDoc, getDocs, query, where } from 'firebase/firestore'
 import { db, storage } from '../config/firebase'
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { UserInfo } from '../contexts/UserInfo'
 import { deleteObject, ref } from 'firebase/storage'
+import { isAddPostInfo } from '../contexts/IsAddPost'
+import UpdateProfilePopup from '../components/Update_profile/UpdateProfilePopup'
 
 const User_Profile = () => {
   const { setScreenLoading } = useContext(ScreenLoadingInfo)
   const [userdata, setUserdata] = useState()
+  const [isAddProfile, setIsAddProfile] = useState(false)
+
   const { userID } = useParams()
   const { info } = useContext(UserInfo)
+  const { setIsAddPost } = useContext(isAddPostInfo)
+
+  const navigate = useNavigate()
 
   const [Postswiththatuid, setPostwiththatuid] = useState([])
 
@@ -23,6 +30,7 @@ const User_Profile = () => {
       try {
         let datauser = await (await getDoc(doc(db, 'users_', userID))).data()
         setUserdata(datauser);
+        setScreenLoading(false)
       } catch (error) { console.error("Error fetching user data:", error) }
     };
     const fetchPosts = async () => {
@@ -31,10 +39,10 @@ const User_Profile = () => {
       let userposts = []
       querySnapshot.forEach((doc) => {
         userposts.push({ id: doc.id, ...doc.data() });
-      }); setPostwiththatuid(userposts); setScreenLoading(false)
+      }); setPostwiththatuid(userposts);
     }
     fetchPosts()
-    fetchData();
+    info.uid !== userID && fetchData();
   }, []);
 
 
@@ -55,34 +63,33 @@ const User_Profile = () => {
   return <>
     <Navbar />
     <Sidebar />
+    {isAddProfile && <UpdateProfilePopup closePopup={setIsAddProfile} />}
+
 
     <div className="profile_container">
       <div className="User_info_and_bannner">
         <div className="profile_banner">
-          <img src={userdata?.banner ? userdata.banner : 'https://t4.ftcdn.net/jpg/04/95/28/65/360_F_495286577_rpsT2Shmr6g81hOhGXALhxWOfx1vOQBa.jpg'} alt="" />
+          <img src={info.uid === userID ? info.banner !== "" ? info.banner : 'https://t4.ftcdn.net/jpg/04/95/28/65/360_F_495286577_rpsT2Shmr6g81hOhGXALhxWOfx1vOQBa.jpg' : userdata?.banner ? userdata.banner : 'https://t4.ftcdn.net/jpg/04/95/28/65/360_F_495286577_rpsT2Shmr6g81hOhGXALhxWOfx1vOQBa.jpg'} alt="" />
         </div>
 
         <div className="Profile_info">
           <div className="profile_Img">
-            <img src={userdata?.photoURL} alt="" />
+            <img src={info.uid === userID ? info.photoURL : userdata?.photoURL} alt="" />
           </div>
 
-          <div className="Profile_Name">{userdata?.displayName}</div>
+          <div className="Profile_Name">{info.uid === userID ? info.displayName : userdata?.displayName}</div>
         </div>
 
         {info.uid === userID && (<div className="profileEdit">
-          <button className='active'>Add a post</button>
-          <button>Edit Profile</button>
+          <button className='active' onClick={() => { navigate("/"); setIsAddPost(true) }}>Add a post</button>
+          <button onClick={() => setIsAddProfile(!isAddProfile)}>Edit Profile</button>
         </div>)}
-
-
-
 
 
       </div>
 
       <div className="Profile_posts">
-        <h2 className='Profile_Heading'>{info.uid === userID ? "Your Posts" : `Posts By ${userdata?.displayName}`}</h2>
+        <h2 className='Profile_Heading'>{info.uid === userID ? "Your Posts" : `Posts By ${info.uid === userID ? info.displayName : userdata?.displayName}`}</h2>
 
 
         {Postswiththatuid.map((data) => <div className="Feed_post" key={data.id} >
@@ -91,13 +98,13 @@ const User_Profile = () => {
             <div className="User_feed_data_user">
               <div className="Feed_user_image">
                 <img
-                  src={userdata?.photoURL}
+                  src={info.uid === userID ? info.photoURL : userdata?.photoURL}
                   alt=""
                 />
               </div>
 
               <div className="Feed_user">
-                <div className="Feed_Name">{userdata?.displayName}</div>
+                <div className="Feed_Name">{info.uid === userID ? info.displayName : userdata?.displayName}</div>
                 <div className="Feed_upload_data">{data?.createdDate}</div>
               </div>
 

@@ -12,3 +12,4 @@ export function PreviewImage(file, callback) {
 
   oFReader.readAsDataURL(file);
 }
+

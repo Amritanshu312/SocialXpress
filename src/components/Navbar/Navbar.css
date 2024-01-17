@@ -57,6 +57,7 @@ ul {
 }
 
 .navbar__userInfo img {
+  height: 19px;
   cursor: pointer;
 }
 
@@ -68,6 +69,7 @@ ul {
   border-radius: 50%;
   height: 40px;
   width: 40px;
+  object-fit: cover;
   border: 2px solid var(--Navbar--blue);
 }
 
@@ -75,6 +77,11 @@ ul {
   .navbar__center {
     display: none;
   }
+  
+  .navbar__userInfo .Sidebar__logo {
+    display: contents !important;
+  }
+
   .navbar__userInfo {
     display: flex;
     align-items: center;
@@ -84,5 +91,5 @@ ul {
     min-width: auto;
     max-width: none;
     margin-inline: 28px;
-}
+  }
 }

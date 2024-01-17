@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import "./Navbar.css"
 import { auth } from "../../config/firebase";
 import { signOut } from "firebase/auth";
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { UserInfo } from '../../contexts/UserInfo';
 
 const Navbar = () => {
@@ -12,19 +12,13 @@ const Navbar = () => {
   const navigation = useNavigate()
   const { userID } = useParams()
 
-  useEffect(() => (
-    (setProfilePic(localStorage.getItem('photoURL') || 'icon/userdummyprofile.svg'),
-      auth.onAuthStateChanged(user => (user
-        ? localStorage.setItem('photoURL', auth?.currentUser?.photoURL || 'icon/userdummyprofile.svg')
-        : setProfilePic('icon/userdummyprofile.svg')
-      )))
-  ), []);
+
+  useEffect(() => setProfilePic(info?.photoURL || 'icon/userdummyprofile.svg'), [info?.photoURL])
 
 
   const logout = async () => {
     try {
       await signOut(auth);
-      localStorage.removeItem('photoURL')
       navigation('/auth')
     } catch (err) {
       console.error(err);
@@ -36,8 +30,9 @@ const Navbar = () => {
       <div></div>
 
       <ul className='navbar__center'>
-        <li className="navbar__li"><a href="#">Home</a></li>
-        <li className="navbar__li active"><a href="#">Notification</a></li>
+
+        <li className="navbar__li active"><Link to="/" >Home</Link></li>
+        <li className="navbar__li"><a href="#">Notification</a></li>
         <li className="navbar__li"><a href="#">Watch</a></li>
         <li className="navbar__li"><a href="#">Marketplace</a></li>
         <li className="navbar__li"><a href="#">Groups</a></li>
@@ -46,6 +41,7 @@ const Navbar = () => {
       </ul>
 
       <div className="navbar__userInfo">
+        <div className="Sidebar__logo" onClick={() => navigation('/')}><img src="/icon/facebook.webp" alt="Logo" /></div>
         <img src="/icon/search.webp" alt="" />
         {!profilePic.includes('.svg') && <img src="/icon/logout.svg" alt="" onClick={logout} />}
         <div className="navbar__user__img">

@@ -1,7 +1,9 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import './Sidebar.css'
+import { isAddPostInfo } from '../../contexts/IsAddPost'
 
 const Sidebar = () => {
+  const { setIsAddPost } = useContext(isAddPostInfo)
   return (
     <div className="Sidebar">
       <div className="Sidebar__logo">
@@ -24,7 +26,7 @@ const Sidebar = () => {
         <img src="/icon/more.webp" alt="" />
       </div>
 
-      <div className="Sidebar__create">
+      <div className="Sidebar__create" onClick={() => setIsAddPost(true)}>
         <img src="/icon/plus.webp" alt="" />
       </div>
     </div>

@@ -16,7 +16,7 @@ const Auth = () => {
     try {
       const userCredential = await signInWithPopup(auth, googleProvider);
       const { displayName, email, phoneNumber, photoURL, uid } = userCredential.user
-      await setDoc(doc(db, "users_", userCredential.user.uid), { displayName, email, phoneNumber, photoURL, uid, banner: "" });
+      userCredential.user.metadata.creationTime === userCredential.user.metadata.lastSignInTime && await setDoc(doc(db, "users_", userCredential.user.uid), { displayName, email, phoneNumber, photoURL, uid, banner: "" })
 
       navigate("/")
     } catch (err) {
