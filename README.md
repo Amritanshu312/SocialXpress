@@ -28,50 +28,28 @@ Personalize your profile or page with a custom banner. Add a unique touch to you
 ### 8. User Info Page
 Get a comprehensive overview of your user information. The User Info page provides insights into your SocialXpress activity, making it easy to manage your profile.
 
-**Key Features:**
 
-* **Post Management:**
-    * Create and share text, image, and video posts.
-    * Edit and delete existing posts.
-    * Compress post images for faster loading and bandwidth optimization.
-* **Authentication:**
-    * Seamless Google authentication for secure login and account management.
-* **Storage:**
-    * Utilize cloud storage for efficient data handling and scalability.
-* **Progress Bar:**
-    * Implement a progress bar to track upload and download processes.
-* **Logo and Banner Customization:**
-    * Resize and personalize the platform logo for a unique identity.
-    * Allow users to add custom banners to their profiles.
-* **User Info Page:**
-    * Dedicated page showcasing user profile details, posts, and connections.
+## Installation
 
-**Technical Stack (Proposed):**
+1. Clone the repository.
+2. Install dependencies using `npm install`.
+3. Run the server using `npm start`.
 
-* Frontend: ReactJS
-* Backend: Firebase
-* Authentication: Google Firebase
-* Storage: Firebase Storage
-* Image Compression: React-Image-Resizer
+## Usage
 
+1. Open the app in your browser.
+2. Sign in using your Google account.
+3. Create a post by clicking on the "Add Post" button.
+4. Delete a post by clicking on the "Delete" button.
+5. Compress an image by clicking on the "Compress" button.
+6. View your user info by clicking on the "User Info" button.
 
-*  **Project Structure:**
+## Contributing
 
-socialxpress/
-├── src/
-│   ├── components/
-│   │   ├── Post.js
-│   │   ├── Profile.js
-│   │   └── ...
-│   ├── pages/
-│   │   ├── Home.js
-│   │   └── UserPage.js
-│   ├── services/
-│   │   ├── AuthService.js
-│   │   └── StorageService.js
-│   └── ...
-├── public/
-│   ├── logo.png
-│   └── styles.css
-├── package.json
-└── README.md
+Contributions are welcome! Please follow the steps below:
+
+1. Fork the repository.
+2. Create a new branch.
+3. Make your changes and commit them.
+4. Push to your forked repository.
+5. Create a pull request.
