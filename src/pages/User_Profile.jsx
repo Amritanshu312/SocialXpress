@@ -3,13 +3,17 @@ import { ScreenLoadingInfo } from '../contexts/screen_Loading'
 import "../styles/User_Profile.css"
 import Navbar from '../components/Navbar/Navbar'
 import Sidebar from '../components/Sidebar/Sidebar'
-import { collection, deleteDoc, doc, getDoc, getDocs, query, where } from 'firebase/firestore'
+import { collection, deleteDoc, doc, getDoc, getDocs, limit, query, where } from 'firebase/firestore'
 import { db, storage } from '../config/firebase'
 import { useNavigate, useParams } from 'react-router-dom';
 import { UserInfo } from '../contexts/UserInfo'
 import { deleteObject, ref } from 'firebase/storage'
 import { isAddPostInfo } from '../contexts/IsAddPost'
 import UpdateProfilePopup from '../components/Update_profile/UpdateProfilePopup'
+
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css';
+import { UserBytesStoredInfo } from '../contexts/UserBytesUploaded'
 
 const User_Profile = () => {
   const { setScreenLoading } = useContext(ScreenLoadingInfo)
@@ -19,36 +23,49 @@ const User_Profile = () => {
   const { userID } = useParams()
   const { info } = useContext(UserInfo)
   const { setIsAddPost } = useContext(isAddPostInfo)
+  const { UsersByte } = useContext(UserBytesStoredInfo)
 
   const navigate = useNavigate()
 
   const [Postswiththatuid, setPostwiththatuid] = useState([])
+  const [storageUsed, setStorageUsed] = useState('0%')
+
+
+  const fetchData = async () => {
+    try {
+      let datauser = (await getDoc(doc(db, 'users_', userID))).data()
+      setUserdata(datauser);
+    } catch (error) { console.error("Error fetching user data:", error) }
+  };
+
+  const fetchPosts = async () => {
+    try {
+      const firestoreRef = query(collection(db, 'posts'), where('uid', '==', userID));
+      const querySnapshot = await getDocs(firestoreRef);
+      const userposts = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      setPostwiththatuid([...userposts]);
+      setScreenLoading(false)
+
+
+    } catch (error) {
+      console.error('Error fetching posts:', error);
+    }
+  };
+
+  useEffect(() => { info.uid === userID && setStorageUsed(`${Math.floor(UsersByte * 100 / 2097152)}%`) }, [UsersByte])
+  useEffect(() => { document.title = `SocialXPress - ${userdata?.displayName || "Loading...."}` }, [userdata?.displayName])
 
   useEffect(() => {
     setScreenLoading(true)
-    const fetchData = async () => {
-      try {
-        let datauser = await (await getDoc(doc(db, 'users_', userID))).data()
-        setUserdata(datauser);
-        setScreenLoading(false)
-      } catch (error) { console.error("Error fetching user data:", error) }
-    };
-    const fetchPosts = async () => {
-      const firestoreRef = query(collection(db, "posts"), where("uid", "==", userID))
-      const querySnapshot = await getDocs(firestoreRef);
-      let userposts = []
-      querySnapshot.forEach((doc) => {
-        userposts.push({ id: doc.id, ...doc.data() });
-      }); setPostwiththatuid(userposts);
-    }
     fetchPosts()
-    info.uid !== userID && fetchData();
+    info.uid !== userID && fetchData()
   }, []);
 
 
   const deleteMovie = async (id, name) => {
     const movieDoc = doc(db, "posts", id);
     await deleteDoc(movieDoc);
+
     if (name) {
       const desertRef = ref(storage, `posts/${name}`);
       await deleteObject(desertRef)
@@ -58,7 +75,13 @@ const User_Profile = () => {
       return data.id !== id;
     }));
 
+
+
+
   };
+
+
+
 
   return <>
     <Navbar />
@@ -87,6 +110,20 @@ const User_Profile = () => {
 
 
       </div>
+
+      {/* user info */}
+      {info.uid === userID &&
+        <div className="UserProfile_UserInfoData">
+          <span className="Userprofile_heading">Storage Used</span>
+          <div className="UploadByteData">
+            <div className="dataUploaded">
+              <div className="progressBar" style={{ width: storageUsed }}></div>
+            </div>
+            <div className="Bytestored"><span>{storageUsed}&#160;</span> / 100%</div>
+          </div>
+        </div>}
+
+      {/* user info end */}
 
       <div className="Profile_posts">
         <h2 className='Profile_Heading'>{info.uid === userID ? "Your Posts" : `Posts By ${info.uid === userID ? info.displayName : userdata?.displayName}`}</h2>
@@ -121,7 +158,7 @@ const User_Profile = () => {
             <div className="Feed_text">{data?.feed_description}</div>
 
             {data.Imageurl && <div className="Feed_image">
-              <img src={data.Imageurl} alt="" />
+              <LazyLoadImage effect="blur" width={'100%'} src={data.Imageurl} alt="" />
             </div>}
 
           </div>

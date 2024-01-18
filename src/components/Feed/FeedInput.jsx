@@ -11,7 +11,8 @@ import {
 } from "firebase/storage";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { checkFileupload } from "../../utils/Check_file_upload";
+import { checkFileupload, compressFileAndExFile } from "../../utils/Check_file_upload";
+import { UserBytesStoredInfo } from "../../contexts/UserBytesUploaded";
 
 const FeedInput = (props) => {
   const moviesCollectionRef = collection(db, "posts");
@@ -21,6 +22,8 @@ const FeedInput = (props) => {
   const { info } = useContext(UserInfo);
   const [imagetoupload, setImagetoupload] = useState('')
   const [previewIMG, setPreviewIMG] = useState('')
+
+  const { UsersByte } = useContext(UserBytesStoredInfo)
 
   const navigate = useNavigate()
 
@@ -43,9 +46,19 @@ const FeedInput = (props) => {
 
           if (imagetoupload.size <= !1000000) { return toast("Please Upload Files smaller than 1 mb") }
 
-          const filename = `${generateRandomString()}.${imagetoupload.name.split('.').pop()}`
+          const file = await compressFileAndExFile(imagetoupload)
+
+
+          if (!file) return toast("Some error occurs")
+
+          if (file.size >= 2097152 - UsersByte) {
+            return toast("You've exceeded your storage. Please delete old posts to post again.");
+          }
+
+
+          const filename = `${generateRandomString()}.webp`
           const storageRef = ref(storage, `posts/${filename}`);
-          const uploadTask = uploadBytesResumable(storageRef, imagetoupload);
+          const uploadTask = uploadBytesResumable(storageRef, file);
 
           // Wait for the upload to complete
           await new Promise((resolve, reject) => {
@@ -73,6 +86,7 @@ const FeedInput = (props) => {
             uid,
             Imageurl: url,
             filename,
+            FileSize: file.size,
             _id: generateRandomString(),
             createdDate,
           });
@@ -103,7 +117,7 @@ const FeedInput = (props) => {
           }, 1000);
         }
       } else {
-        toast("Please choose a file first!")
+        toast("At least write something if you want to post!")
         setProgressbar(null);
       }
     } catch (err) {

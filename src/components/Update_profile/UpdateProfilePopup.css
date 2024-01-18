@@ -1,13 +1,15 @@
 .UpdateProfile {
-  position: fixed;
+  position: absolute;
   z-index: 11;
   background: white;
   border-radius: 10px;
   border: 2px solid #00000024;
   left: 50%;
-  width: 42rem;
+  width: 100%;
   transform: translate(-50%, -50%);
   top: 50%;
+  max-width: 42rem;
+  min-width: 20rem;
   animation: popup 0.5s ease-in-out;
 }
 
@@ -138,4 +140,22 @@
   100% {
     transform: translate(-50%, -50%) scale(1);
   }
+}
+
+@media only screen and (max-width: 675px) {
+  .UpdateProfile {
+    top: 0;
+    left: 0;
+    transform: translate(0%, 0%);
+  }
+
+  @keyframes popup {
+  0% {
+    transform: scale(0.2);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
 }

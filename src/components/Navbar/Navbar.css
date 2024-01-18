@@ -73,11 +73,15 @@ ul {
   border: 2px solid var(--Navbar--blue);
 }
 
+.navbar__userInfo .Sidebar__logo {
+  display: none;
+}
+
 @media only screen and (max-width: 980px) {
   .navbar__center {
     display: none;
   }
-  
+
   .navbar__userInfo .Sidebar__logo {
     display: contents !important;
   }

@@ -30,10 +30,10 @@ const Posts = () => {
       snapshot.docChanges().forEach((change) => {
         if (change.type === 'added') {
           // setFeedData((prevFeedData) => [change.doc.data(), ...prevFeedData]);
-          getMovieList()
+          getPosts()
         }
         if (change.type === 'removed') {
-          getMovieList()
+          getPosts()
         }
       });
     });
@@ -41,9 +41,9 @@ const Posts = () => {
   }, [db]);
 
 
-  const getMovieList = async () => {
+  const getPosts = async () => {
     try {
-      const data = await getDocs(query(collection(db, 'posts'), orderBy('createdDate'), limit(getfrom)));
+      const data = await getDocs(query(collection(db, 'posts'), orderBy('createdDate', 'asc'), limit(getfrom)));
       const querySnapshot = await getDocs(collection(db, 'posts'));
 
       if (!querySnapshot.docs) {
@@ -93,18 +93,23 @@ const Posts = () => {
 
 
   const deleteMovie = async (id, name) => {
+    setScreenLoading(true);
     const movieDoc = doc(db, "posts", id);
     await deleteDoc(movieDoc);
+
+
     if (name) {
-      const desertRef = ref(storage, `posts/${name}`);
-      await deleteObject(desertRef)
+      const postRef = ref(storage, `posts/${name}`);
+      await deleteObject(postRef);
     }
+    setScreenLoading(false);
   };
+
 
 
   const loadMore = () => {
     setgetfrom(getfrom + 6)
-    getMovieList()
+    getPosts()
   }
 
   useEffect(() => loadMore, [])

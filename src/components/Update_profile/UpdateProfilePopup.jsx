@@ -45,6 +45,18 @@ const UpdateProfilePopup = (props) => {
       }
     }
 
+    if (profileFile.length !== 0 && ProfileBanner.length !== 0) {
+      const photoURL = await uploadProfilePhoto(profileFile);
+      setInfo({ ...info, photoURL });
+
+      const banner = await uploadProfileBanner(ProfileBanner);
+      setInfo({ ...info, banner });
+
+      if (name !== displayName) {
+        await updateDisplayName();
+      }
+    }
+
     if (name !== displayName) {
       try {
         await updateDoc(doc(db, "users_", auth.currentUser.uid), { displayName: name });
@@ -92,7 +104,7 @@ const UpdateProfilePopup = (props) => {
             width: '37rem',
             borderRadius: '10px',
             cursor: 'pointer',
-            background: `url(${UserBanner ? UserBanner : "https://t4.ftcdn.net/jpg/04/95/28/65/360_F_495286577_rpsT2Shmr6g81hOhGXALhxWOfx1vOQBa.jpg"}) 0% 0% / cover`
+            background: `url(${UserBanner ? UserBanner : "https://t4.ftcdn.net/jpg/04/95/28/65/360_F_495286577_rpsT2Shmr6g81hOhGXALhxWOfx1vOQBa.jpg"}) 0% 50% /cover`
           }}></label>
 
           <input type="file" id="bannerUpdate" style={{ display: "none" }} onChange={e => {

@@ -27,7 +27,7 @@ export const resizeFile = (file) =>
     const startX = centerX - Math.floor(targetSize / 2);
     const startY = centerY - Math.floor(targetSize / 2);
 
-    Resizer.imageFileResizer(file, targetSize, targetSize, 'WEBP', 90, 0, (uri) => {
+    Resizer.imageFileResizer(file, targetSize, targetSize, 'WEBP', 75, 0, (uri) => {
       resolve(uri);
     }, 'base64', startX, startY);
   });
@@ -36,7 +36,15 @@ export const resizeFile = (file) =>
 // Function to compress an image
 export const compressFile = (file) =>
   new Promise((resolve) => {
-    Resizer.imageFileResizer(file, file.width, file.height, 'WEBP', 60, 0, (uri) => {
+    Resizer.imageFileResizer(file, file.width, file.height, 'WEBP', 55, 0, (uri) => {
       resolve(uri);
     });
+  });
+
+
+export const compressFileAndExFile = (file) =>
+  new Promise((resolve) => {
+    Resizer.imageFileResizer(file, file.width, file.height, 'WEBP', 50, 0, (uri) => {
+      resolve(uri);
+    }, 'file');
   });

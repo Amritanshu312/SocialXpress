@@ -7,8 +7,6 @@ import { isAddPostInfo } from '../../contexts/IsAddPost'
 
 const Feeds = () => {
   const { isAddPost, setIsAddPost } = useContext(isAddPostInfo)
-  const { setScreenLoading } = useContext(ScreenLoadingInfo)
-  useEffect(() => setScreenLoading(false), [])
 
   return (
     <div className="Feed__container">

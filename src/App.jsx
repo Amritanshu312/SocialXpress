@@ -8,6 +8,7 @@ import { ScreenLoadingInfo } from './contexts/screen_Loading';
 import User_Profile from './pages/User_Profile';
 import 'react-toastify/dist/ReactToastify.css'
 import { ToastContainer } from 'react-toastify';
+import UserBytesStoredState from './contexts/UserBytesUploaded';
 
 const App = () => {
   const { ScreenLoading } = useContext(ScreenLoadingInfo)
@@ -16,12 +17,14 @@ const App = () => {
     <>
       <UserState>
         {ScreenLoading && <Loading />}
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/auth" element={<Auth />} />
-          <Route path="/user/:userID" element={<User_Profile />} />
-        </Routes>
-        
+        <UserBytesStoredState>
+
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/auth" element={<Auth />} />
+            <Route path="/user/:userID" element={<User_Profile />} />
+          </Routes>
+        </UserBytesStoredState>
         <ToastContainer />
 
       </UserState>
