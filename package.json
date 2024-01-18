@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@vercel/analytics": "^1.1.2",
     "firebase": "^10.7.1",
     "gif-picker-react": "^1.3.2",
     "react": "^18.2.0",

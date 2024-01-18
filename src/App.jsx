@@ -10,6 +10,10 @@ import 'react-toastify/dist/ReactToastify.css'
 import { ToastContainer } from 'react-toastify';
 import UserBytesStoredState from './contexts/UserBytesUploaded';
 
+// vercel
+import { Analytics } from '@vercel/analytics/react';
+
+
 const App = () => {
   const { ScreenLoading } = useContext(ScreenLoadingInfo)
 
@@ -28,6 +32,8 @@ const App = () => {
         <ToastContainer />
 
       </UserState>
+
+      <Analytics />
     </>
   )
 }
