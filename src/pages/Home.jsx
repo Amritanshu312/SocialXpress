@@ -6,8 +6,6 @@ import Feeds from '../components/Feed/Feeds'
 
 
 const Home = () => {
-  useEffect(() => {document.title = `SocialXPress - A Fully Fleged facebook clone`}, [])
-
   return (
     <div className='container'>
       <Navbar />

@@ -53,9 +53,7 @@ const User_Profile = () => {
   };
 
   useEffect(() => { info.uid === userID && setStorageUsed(`${Math.floor(UsersByte * 100 / 2097152)}%`) }, [UsersByte])
-  useEffect(() => {
-    document.title = `SocialXPress - ${userdata?.displayName ?? "Loading...."}`;
-  }, [userdata?.displayName]);
+
 
   useEffect(() => {
     setScreenLoading(true)
