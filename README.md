@@ -1,8 +1,8 @@
 # SocialXpress
 
-As a beginner, I am proud to say that I have created my first React project using Firebase. The project is called SocialXpress, a social media platform that has additional features such as storage management for all users. The functionalities of SocialXpress are inspired by popular platforms like Facebook. However, being a novice, there might be some errors. Nonetheless, I am excited about this project and hope to continue developing my skills as a developer.
+I am just starting my programming journey, and I am excited to share that I have completed my first React project using Firebase! I created a social media platform called SocialXpress, which has additional features like storage management for all users. The platform functionalities were inspired by popular platforms like Facebook. As a beginner in React, there might be some errors that I need to fix, but I am determined to learn and improve my skills. Overall, I am happy with my progress and looking forward to continuing my programming journey.
 
-
+<br>
 
 ## Features
 
