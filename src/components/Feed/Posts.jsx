@@ -46,6 +46,10 @@ const Posts = () => {
       const data = await getDocs(query(collection(db, 'posts'), orderBy('createdDate', 'asc'), limit(getfrom)));
       const querySnapshot = await getDocs(collection(db, 'posts'));
 
+      if (querySnapshot.docs.data().length === 0) {
+        return setScreenLoading(false);
+      }
+
       if (!querySnapshot.docs) {
         console.error('Error: Unable to retrieve documents.');
         return;
