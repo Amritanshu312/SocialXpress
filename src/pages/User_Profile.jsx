@@ -62,7 +62,9 @@ const User_Profile = () => {
   }, []);
 
 
+
   const deleteMovie = async (id, name) => {
+    setScreenLoading(true);
     const movieDoc = doc(db, "posts", id);
     await deleteDoc(movieDoc);
 
@@ -75,8 +77,7 @@ const User_Profile = () => {
       return data.id !== id;
     }));
 
-
-
+    setScreenLoading(false);
 
   };
 
