@@ -1,6 +1,8 @@
 # SocialXpress
 
-SocialXpress is a social media platform with additional features designed to enhance your social experience. With functionalities inspired by popular platforms like Facebook, SocialXpress goes the extra mile to provide a unique and streamlined user experience.
+As a beginner, I am proud to say that I have created my first React project using Firebase. The project is called SocialXpress, a social media platform that has additional features such as storage management for all users. The functionalities of SocialXpress are inspired by popular platforms like Facebook. However, being a novice, there might be some errors. Nonetheless, I am excited about this project and hope to continue developing my skills as a developer.
+
+
 
 ## Features
 
@@ -26,23 +28,34 @@ Customize your platform's appearance by resizing the logo image. SocialXpress ma
 Personalize your profile or page with a custom banner. Add a unique touch to your SocialXpress presence with the ability to set a custom banner image.
 
 ### 8. User Info Page
-Get a comprehensive overview of your user information. The User Info page provides insights into your SocialXpress activity, making it easy to manage your profile.
+Get a comprehensive overview of your or Others user information. The User Info page provides insights into your SocialXpress activity, making it easy to manage your profile.
+
+
 
 
 ## Installation
 
 1. Clone the repository.
-2. Install dependencies using `npm install`.
-3. Run the server using `npm start`.
+   
+2. Install dependencies using
+`npm install`
+   
+3. Run the server using
+`npm start`
+
+
 
 ## Usage
 
-1. Open the app in your browser.
-2. Sign in using your Google account.
-3. Create a post by clicking on the "Add Post" button.
-4. Delete a post by clicking on the "Delete" button.
-5. Compress an image by clicking on the "Compress" button.
-6. View your user info by clicking on the "User Info" button.
+###1. Open the app in your browser.
+
+###2. Sign in using your Google account.
+
+###3. Create a post by clicking on the "Add Post" button.
+
+###4. Delete a post by clicking on the "Delete" icons.
+
+###6. View your user info by clicking on Your profile image or others.
 
 ## Contributing
 
