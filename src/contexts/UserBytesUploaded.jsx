@@ -8,23 +8,25 @@ const UserBytesStoredState = (props) => {
   const [UsersByte, setUsersByte] = useState(0)
 
   auth.onAuthStateChanged(async function (user) {
-    try {
-      const firestoreRef = query(collection(db, 'posts'), where('uid', '==', user?.uid));
-      const querySnapshot = await getDocs(firestoreRef);
-      const userposts = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-      let byte = 0;
+    if (user?.uid) {
+      try {
+        const firestoreRef = query(collection(db, 'posts'), where('uid', '==', user?.uid));
+        const querySnapshot = await getDocs(firestoreRef);
+        const userposts = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+        let byte = 0;
 
-      userposts.forEach((data) => {
-        if (data?.FileSize) {
-          byte += data?.FileSize;
-        }
-      });
+        userposts.forEach((data) => {
+          if (data?.FileSize) {
+            byte += data?.FileSize;
+          }
+        });
 
-      setUsersByte(Math.floor(byte));
+        setUsersByte(Math.floor(byte));
 
 
-    } catch (error) {
-      console.error('Error fetching posts:', error);
+      } catch (error) {
+        console.error('Error fetching posts:', error);
+      }
     }
   })
 
