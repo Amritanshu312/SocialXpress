@@ -46,11 +46,6 @@ const Posts = () => {
       const data = await getDocs(query(collection(db, 'posts'), orderBy('createdDate', 'asc'), limit(getfrom)));
       const querySnapshot = await getDocs(collection(db, 'posts'));
 
-      if (querySnapshot.docs.data().length === 0) {
-        setScreenLoading(false);
-        return
-      }
-
       if (!querySnapshot.docs) {
         console.error('Error: Unable to retrieve documents.');
         return;
@@ -87,10 +82,11 @@ const Posts = () => {
         userData: item.userData || batches[Math.floor(index / batchSize)][index % batchSize].data(),
       }));
 
-      setScreenLoading(false);
       setFeedData(filteredDataWithUserInfo);
     } catch (err) {
       console.error(err);
+    } finally {
+      setScreenLoading(false);
     }
   };
   ;
