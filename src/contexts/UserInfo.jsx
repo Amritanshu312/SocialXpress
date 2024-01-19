@@ -13,7 +13,6 @@ const UserState = (props) => {
         let LoggedIn = true;
         let datauser = await getDoc(doc(db, 'users_', user.uid));
 
-        console.log(datauser.data());
         const { email, emailVerified, displayName, photoURL, banner, uid } = datauser.data();
         setInfo({ email, emailVerified, displayName, photoURL, uid, banner, LoggedIn });
       } else {
