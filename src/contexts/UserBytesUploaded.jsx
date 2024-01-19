@@ -5,7 +5,7 @@ import { auth, db } from "../config/firebase";
 export const UserBytesStoredInfo = createContext();
 
 const UserBytesStoredState = (props) => {
-  const [usersByte, setUsersByte] = useState(0);
+  const [UsersByte, setUsersByte] = useState(0);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async function (user) {
@@ -34,7 +34,7 @@ const UserBytesStoredState = (props) => {
   }, []); // Empty dependency array to run the effect once on mount
 
   return (
-    <UserBytesStoredInfo.Provider value={{ usersByte }}>
+    <UserBytesStoredInfo.Provider value={{ UsersByte }}>
       {props.children}
     </UserBytesStoredInfo.Provider>
   );

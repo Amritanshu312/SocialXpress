@@ -70,7 +70,7 @@ const Posts = () => {
       const batchSize = 10;
       const batches = await Promise.all(
         uidsToFetchFromApi
-          .map((i) => (i % batchSize === 0 ? uidsToFetchFromApi.slice(i, i + batchSize) : null))
+          .map((uid, i) => (i % batchSize === 0 ? uidsToFetchFromApi.slice(i, i + batchSize) : null))
           .filter(Boolean)
           .map(batchUids =>
             Promise.all(batchUids.map(uid => getDoc(doc(db, 'users_', uid))))
@@ -82,9 +82,8 @@ const Posts = () => {
         userData: item.userData || batches[Math.floor(index / batchSize)][index % batchSize].data(),
       }));
 
-
-      setFeedData(filteredDataWithUserInfo);
       setScreenLoading(false);
+      setFeedData(filteredDataWithUserInfo);
     } catch (err) {
       console.error(err);
     }
