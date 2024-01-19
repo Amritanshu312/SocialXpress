@@ -5,6 +5,9 @@ import './styles/index.css'
 import { BrowserRouter } from "react-router-dom";
 import ScreenLoadingState from './contexts/screen_Loading.jsx';
 import IsAddPostState from './contexts/IsAddPost';
+import { inject } from '@vercel/analytics';
+
+inject()
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -14,8 +17,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <IsAddPostState>
           <App />
         </IsAddPostState>
-
       </ScreenLoadingState>
     </BrowserRouter>
+
   </React.StrictMode>,
 )
