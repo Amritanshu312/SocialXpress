@@ -1,5 +1,7 @@
 # SocialXpress
 
+<img src="https://i.ibb.co/vQKcdqF/best-2843.webp"/>
+
 I am just starting my programming journey, and I am excited to share that I have completed my first React project using Firebase! I created a social media platform called SocialXpress, which has additional features like storage management for all users. The platform functionalities were inspired by popular platforms like Facebook. As a beginner in React, there might be some errors that I need to fix, but I am determined to learn and improve my skills. Overall, I am happy with my progress and looking forward to continuing my programming journey.
 
 <br>
