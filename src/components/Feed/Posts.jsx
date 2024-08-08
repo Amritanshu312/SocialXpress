@@ -25,28 +25,38 @@ const Posts = () => {
     const unsubscribe = onSnapshot(queryPosts, (snapshot) => {
       snapshot.docChanges().forEach((change) => {
         if (change.type === 'added' || change.type === 'removed') {
+          console.log('Detected changes in Firestore, fetching posts...');
           getPosts();
         }
       });
     });
+
+    // Initial load
+    getPosts();
+
     return () => unsubscribe();
   }, []);
 
   const getPosts = async () => {
+    setScreenLoading(true);
     try {
+      console.log('Fetching posts...');
+
       const data = await getDocs(query(collection(db, 'posts'), orderBy('createdDate', 'asc'), limit(getfrom)));
       const querySnapshot = await getDocs(collection(db, 'posts'));
 
-      if (!querySnapshot.docs) {
+      if (!querySnapshot.docs.length) {
         console.error('Error: Unable to retrieve documents.');
         return;
       }
 
       const totalData = querySnapshot.docs.length;
       setTotalData(totalData);
+      console.log('Total documents:', totalData);
 
       const filteredData = data.docs.map(doc => ({ ...doc.data(), id: doc.id }));
       setFetchData(filteredData.length);
+      console.log('Fetched documents:', filteredData.length);
 
       const uidsToFetch = filteredData.map(item => item.uid);
       const cachedUserInformation = {};
@@ -73,9 +83,10 @@ const Posts = () => {
         userData: item.userData || batches[Math.floor(index / batchSize)][index % batchSize].data(),
       }));
 
+      console.log('Final Feed Data:', filteredDataWithUserInfo);
       setFeedData(filteredDataWithUserInfo);
     } catch (err) {
-      console.error(err);
+      console.error('Error fetching posts:', err);
     } finally {
       setScreenLoading(false);
     }
@@ -83,24 +94,25 @@ const Posts = () => {
 
   const deleteMovie = async (id, name) => {
     setScreenLoading(true);
-    const movieDoc = doc(db, "posts", id);
-    await deleteDoc(movieDoc);
+    try {
+      const movieDoc = doc(db, "posts", id);
+      await deleteDoc(movieDoc);
 
-    if (name) {
-      const postRef = ref(storage, `posts/${name}`);
-      await deleteObject(postRef);
+      if (name) {
+        const postRef = ref(storage, `posts/${name}`);
+        await deleteObject(postRef);
+      }
+    } catch (err) {
+      console.error('Error deleting post:', err);
+    } finally {
+      setScreenLoading(false);
     }
-    setScreenLoading(false);
   };
 
   const loadMore = () => {
     setgetfrom(prev => prev + 6);
     getPosts();
   };
-
-  useEffect(() => {
-    getPosts(); // Initial load
-  }, []);
 
   return (
     <InfiniteScroll
